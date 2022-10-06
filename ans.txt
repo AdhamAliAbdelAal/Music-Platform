@@ -1,0 +1,81 @@
+>>> artist1=Artist(stage_name='stage1',social_link='https://github.com/AdhamAliAbdelAal')
+>>> artist1.save()
+>>> Artist.objects.all()
+<QuerySet [<Artist: stage name: stage1, social link: https://github.com/AdhamAliAbdelAal>]>
+>>> artist2=Artist(stage_name='stage2',social_link='https://github.com/AdhamAliAbdelAal/Django-Blog/blob/master/task-1.md')
+>>> artist2.save()
+>>> artist3=Artist(stage_name='stage3',social_link='https://docs.djangoproject.com/en/4.1/ref/models/fields/#null')
+>>> artist3.save()
+>>> Artist.objects.all()
+<QuerySet [<Artist: stage name: stage1, social link: https://github.com/AdhamAliAbdelAal>, <Artist: stage name: stage2, social link: https://github.com/AdhamAliAbdelAal/Django-Blog/blob/master/task-1.md>, <Artist: stage name: stage3, social link: https://docs.djangoproject.com/en/4.1/ref/models/fields/#null>]>
+>>> artist4=Artist(stage_name='adham',social_link='https://github.com')
+>>> artist4.save()
+>>> Artist.objects.all()
+<QuerySet [<Artist: stage name: stage1, social link: https://github.com/AdhamAliAbdelAal>, <Artist: stage name: stage2, social link: https://github.com/AdhamAliAbdelAal/Django-Blog/blob/master/task-1.md>, <Artist: stage name: stage3, social link: https://docs.djangoproject.com/en/4.1/ref/models/fields/#null>, <Artist: stage name: adham, social link: https://github.com>]>
+>>> Artist.objects.ordered_by('stage_name')
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: 'Manager' object has no attribute 'ordered_by'
+>>> Artist.objects.order_by('stage_name')
+<QuerySet [<Artist: stage name: adham, social link: https://github.com>, <Artist: stage name: stage1, social link: https://github.com/AdhamAliAbdelAal>, <Artist: stage name: stage2, social link: https://github.com/AdhamAliAbdelAal/Django-Blog/blob/master/task-1.md>, <Artist: stage name: stage3, social link: https://docs.djangoproject.com/en/4.1/ref/models/fields/#null>]>
+>>> Artist.objects.filter(stage_name='a%') 
+<QuerySet []>
+>>>
+>>> Artist.objects.filter(stage_name__istartswith='a')
+<QuerySet [<Artist: stage name: adham, social link: https://github.com>]>
+>>> album1=Album(name='album1',cost=12.45,artist=artist1)
+>>> album1.save()
+>>> artist2.album_set.create(cost=1452.4355)                            
+<Album: artist: stage name: stage2, social link: https://github.com/AdhamAliAbdelAal/Django-Blog/blob/master/task-1.md, name: New Album, creation 
+time:2022-10-05 04:31:04.419205+00:00, release time=2022-10-05 04:31:04.419205+00:00, cost=1452.4355>
+>>> Album.objects.all()
+<QuerySet [<Album: artist: stage name: stage1, social link: https://github.com/AdhamAliAbdelAal, name: album1, creation time:2022-10-05 04:28:58.133643+00:00, release time=2022-10-05 04:28:58.133643+00:00, cost=12.4500000000>, <Album: artist: stage name: stage2, social link: https://github.com/AdhamAliAbdelAal/Django-Blog/blob/master/task-1.md, name: New Album, creation time:2022-10-05 04:31:04.419205+00:00, release time=2022-10-05 04:31:04.419205+00:00, cost=1452.4355000000>]>
+>>> from datetime import datetime,timedelta                           
+>>> yesterday=datetime.now()-timedelta(1) 
+>>> yesterday
+datetime.datetime(2022, 10, 4, 6, 42, 23, 823556)
+>>> tomorrow=datetime.now()+timedelta(1) 
+>>> tomorrow
+datetime.datetime(2022, 10, 6, 6, 43, 3, 384827)
+album3=Album(name='albumblahblah',cost=3878,artist=artist1,release_time=yesterday) 
+>>> album3
+<Album: artist: stage name: stage1, social link: https://github.com/AdhamAliAbdelAal, name: albumblahblah, creation time:None, release time=2022-10-04 07:05:15.339158, cost=3878>
+>>> album3.save()
+D:\CMP\CMP5\vacation\bld.ai\django_task#1\music platform\music_platform-q3uhdxwX-py3.10\lib\site-packages\django\db\models\fields\__init__.py:1564: RuntimeWarning: DateTimeField Album.release_time received a naive datetime (2022-10-04 07:05:15.339158) while time zone support is active.      
+  warnings.warn(
+album4=Album(name='album6',cost=573,artist=artist1,release_time=tomorrow)           
+>>> album3.save()
+Album.objects.order_by('release_time')[0:2]
+<QuerySet [<Album: artist: stage name: stage1, social link: https://github.com/AdhamAliAbdelAal, name: albumblahblah, creation time:2022-10-05 05:06:59.093653+00:00, release time=2022-10-04 07:05:15.339158+00:00, cost=3878.0000000000>, <Album: artist: stage name: stage1, social link: https://github.com/AdhamAliAbdelAal, name: album1, creation time:2022-10-05 04:28:58.133643+00:00, release time=2022-10-05 04:28:58.133643+00:00, cost=12.4500000000>]>
+
+        
+Album.objects.filter(release_time__date__lt=date.today())   
+<QuerySet [<Album: artist: stage name: stage1, social link: https://github.com/AdhamAliAbdelAal, name: albumblahblah, creation time:2022-10-05 05:06:59.093653+00:00, release time=2022-10-04 07:05:15.339158+00:00, cost=3878.0000000000>]>
+
+Album.objects.filter(release_time__date__lte=date.today()) 
+<QuerySet [<Album: artist: stage name: stage1, social link: https://github.com/AdhamAliAbdelAal, name: album1, creation time:2022-10-05 04:28:58.133643+00:00, release time=2022-10-05 04:28:58.133643+00:00, cost=12.4500000000>, <Album: artist: stage name: stage2, social link: https://github.com/AdhamAliAbdelAal/Django-Blog/blob/master/task-1.md, name: New Album, creation time:2022-10-05 04:31:04.419205+00:00, release time=2022-10-05 04:31:04.419205+00:00, cost=1452.4355000000>, <Album: artist: stage name: stage3, social link: https://docs.djangoproject.com/en/4.1/ref/models/fields/#null, name: album3, creation time:2022-10-05 04:57:04.826862+00:00, release time=2022-10-05 04:57:04.826862+00:00, cost=150.0000000000>, 
+<Album: artist: stage name: stage1, social link: https://github.com/AdhamAliAbdelAal, name: albumblahblah, creation time:2022-10-05 05:06:59.093653+00:00, release time=2022-10-04 07:05:15.339158+00:00, cost=3878.0000000000>]>
+
+for artist in Artist.objects.all():
+...     artist.album_set.all()
+... 
+<QuerySet [<Album: artist: stage name: stage1, social link: https://github.com/AdhamAliAbdelAal, name: album1, creation time:2022-10-05 04:28:58.133643+00:00, release time=2022-10-05 04:28:58.133643+00:00, cost=12.4500000000>, <Album: artist: stage name: stage1, social link: https://github.com/AdhamAliAbdelAal, name: albumblahblah, creation time:2022-10-05 05:06:59.093653+00:00, release time=2022-10-04 07:05:15.339158+00:00, cost=3878.0000000000>, <Album: artist: stage name: stage1, social link: https://github.com/AdhamAliAbdelAal, name: album6, creation time:2022-10-05 05:09:04.103758+00:00, release time=2022-10-06 07:05:38.273287+00:00, cost=573.0000000000>]>
+<QuerySet [<Album: artist: stage name: stage2, social link: https://github.com/AdhamAliAbdelAal/Django-Blog/blob/master/task-1.md, name: New Album, creation time:2022-10-05 04:31:04.419205+00:00, release time=2022-10-05 04:31:04.419205+00:00, cost=1452.4355000000>]>
+<QuerySet [<Album: artist: stage name: stage3, social link: https://docs.djangoproject.com/en/4.1/ref/models/fields/#null, name: album3, creation time:2022-10-05 04:57:04.826862+00:00, release time=2022-10-05 04:57:04.826862+00:00, cost=150.0000000000>]>
+<QuerySet []>
+
+for artist in Artist.objects.all():
+...     Album.objects.filter(artist=artist)
+... 
+<QuerySet [<Album: artist: stage name: stage1, social link: https://github.com/AdhamAliAbdelAal, name: album1, creation time:2022-10-05 04:28:58.133643+00:00, release time=2022-10-05 04:28:58.133643+00:00, cost=12.4500000000>, <Album: artist: stage name: stage1, social link: https://github.com/AdhamAliAbdelAal, name: albumblahblah, creation time:2022-10-05 05:06:59.093653+00:00, release time=2022-10-04 07:05:15.339158+00:00, cost=3878.0000000000>, <Album: artist: stage name: stage1, social link: https://github.com/AdhamAliAbdelAal, name: album6, creation time:2022-10-05 05:09:04.103758+00:00, release time=2022-10-06 07:05:38.273287+00:00, cost=573.0000000000>]>
+<QuerySet [<Album: artist: stage name: stage2, social link: https://github.com/AdhamAliAbdelAal/Django-Blog/blob/master/task-1.md, name: New Album, creation time:2022-10-05 04:31:04.419205+00:00, release time=2022-10-05 04:31:04.419205+00:00, cost=1452.4355000000>]>
+<QuerySet [<Album: artist: stage name: stage3, social link: https://docs.djangoproject.com/en/4.1/ref/models/fields/#null, name: album3, creation time:2022-10-05 04:57:04.826862+00:00, release time=2022-10-05 04:57:04.826862+00:00, cost=150.0000000000>]>
+<QuerySet []>
+
+Album.objects.count()
+5
+
+
+
+Album.objects.order_by('cost','name')
+<QuerySet [<Album: artist: stage name: stage1, social link: https://github.com/AdhamAliAbdelAal, name: album1, creation time:2022-10-05 04:28:58.133643+00:00, release time=2022-10-05 04:28:58.133643+00:00, cost=12.4500000000>, <Album: artist: stage name: stage3, social link: https://docs.djangoproject.com/en/4.1/ref/models/fields/#null, name: album3, creation time:2022-10-05 04:57:04.826862+00:00, release time=2022-10-05 04:57:04.826862+00:00, cost=150.0000000000>, <Album: artist: stage name: stage1, social link: https://github.com/AdhamAliAbdelAal, name: album6, creation time:2022-10-05 05:09:04.103758+00:00, release time=2022-10-06 07:05:38.273287+00:00, cost=573.0000000000>, <Album: artist: stage name: stage2, social link: https://github.com/AdhamAliAbdelAal/Django-Blog/blob/master/task-1.md, name: New Album, creation time:2022-10-05 04:31:04.419205+00:00, release time=2022-10-05 04:31:04.419205+00:00, cost=1452.4355000000>, <Album: artist: stage name: stage1, social link: https://github.com/AdhamAliAbdelAal, name: albumblahblah, creation time:2022-10-05 05:06:59.093653+00:00, release time=2022-10-04 07:05:15.339158+00:00, cost=3878.0000000000>]>

@@ -22,4 +22,4 @@ class Album(models.Model):
         max_digits=20
     )
     def __str__(self):
-        return f'artist: {self.artist}, name: {self.name}, creation time:{self.creation_time}, release time={self.release_time}, cost={self.cost}\n'
+        return self.name

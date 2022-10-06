@@ -12,4 +12,4 @@ class Artist(models.Model):
         null=False,
     )
     def __str__(self):
-        return f'stage name: {self.stage_name}, social link: {self.social_link}\n'
+        return self.stage_name
