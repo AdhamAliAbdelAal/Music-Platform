@@ -1,6 +1,7 @@
 from django.db import models
 from artists.models import Artist
 # Create your models here.
+
 class Album(models.Model):
     artist=models.ForeignKey(
         Artist,
