@@ -1,169 +1,113 @@
-# 🔎 Binary search
+# 🔎 Music Platform
 
-## <font color='08FAFA'>Introduction</font>
-
-- Find a specific page in a book
-- Guessing game
-
-``` txt
-    0 1 2 3 4  5  6  => indexes
-    2 3 5 7 11 13 17 => array
-```
-
-- Complexity **O(?)**
-
-- **Monotonic behavior**
-
-![image](https://user-images.githubusercontent.com/40351413/113416819-5beb0700-93c2-11eb-91af-1181472a1deb.png)
-![image](https://user-images.githubusercontent.com/40351413/113416752-3f4ecf00-93c2-11eb-81b7-f2e244a28698.png)
-![image](https://user-images.githubusercontent.com/40351413/113416770-4675dd00-93c2-11eb-99bd-2112e9e0701c.png)
-
-## <font color='08FAFA'>Two types of problems</font>
-
-### 1. Searching for a specific item
-
-#### Example
-
-- Guessing game
-
-#### Implementation
-
-```cpp
-    int n = 7, target = 11;
-    vector<int> arr = {2, 3, 5, 7, 11, 13, 17};
-
-    int index = -1;
-    int left = 0, right = n - 1;
-
-    while (left <= right) {
-        // int mid = (left + right) / 2;
-        int mid = left + (right - left) / 2; // Prevent overflow
-
-        if (arr[mid] < target)
-            left = mid + 1;
-        else if (arr[mid] > target)
-            right = mid - 1;
-        else if (arr[mid] == target) {
-            index = mid;
-            break;
-        }
-    }
-
-    cout << "Index: " << index << " - Element: " << arr[index] << endl;
- 
-```
-
-```cpp
-/**
-  Output:
-  Index: 4 - Element: 11
- */ 
+## 1. Importing Artist, Album and datetime models
 
 ```
-
-### 2. Minimization and maximization problems
-
-#### Example
-
-- Get the minimum number that is greater than 8
-  
-``` txt
-    2 3 5 7 11 13 17 => array
-    0 0 0 0 1  1  1  => valid
+from artists.models import Artist
+from albums.models import Album
+from datetime import datetime,timedelta
 ```
-
-#### Implementation
-
-```cpp
-    int n = 7, target = 8;
-    vector<int> arr = {2, 3, 5, 7, 11, 13, 17};
-
-    int index = -1;
-    int left = 0, right = n - 1;
-
-    while (left <= right) {
-        int mid = (left + right) / 2;
-
-        if (arr[mid] <= target)
-            left = mid + 1;
-        else if (arr[mid] > target) // upper-bound
-            right = mid - 1, index = mid;
-//        else if (arr[mid] >= target) // lower-bound
-//            right = mid - 1, index = mid;
-    }
-
-    cout << "Index: " << index << " - Element: " << arr[index] << endl;
+## 2. Time and date setting
 
 ```
-
-```cpp
-/**
-   Output:
-   Index: 4 - Element: 11
- */ 
-
+today=datetime.now()
+yesterday=today-timedelta(1) 
+tomorrow=today+timedelta(1) 
+```
+## 3. Creating some artists 
+```
+artist1=Artist(stage_name='John',social_link='https://github.com/AdhamAliAbdelAal')
+artist1.save()
+artist2=Artist(stage_name='Andrew',social_link='https://www.linkedin.com/in/adham-ali-727967221/')
+artist2.save()
+artist3=Artist(stage_name='Micheal',social_link='https://gitlab.com/AdhamAliAbdelAal')
+artist3.save()
 ```
 
-## <font color='08FAFA'>Built-in functions (STL)</font>
-
-> CPP provides a built in function in STL (Standard template library)
-
-### binary_search
-  
-- Return whether a vector has element x or not
-- Your array should be **sorted**
-
-```cpp
-    int x;
-    cin >> x;
-
-    if (binary_search(b.begin(), b.end(), x)) {
-        cout << "Found" << endl;
-    } else {
-        cout << "Not found" << endl;
-    }
+## 4. Listing down all artists 
+- Artist.objects.all()
 
 ```
-
-### lower_bound
-  
-- returns an iterator pointing to the first element greater than or equal **‘x’**
-- Your array should be **sorted**
-
-```cpp
-    int x;
-    cin >> x;
-    auto it = lower_bound(b.begin(), b.end(), x);
-    auto index = it - b.begin();
-
-    if (it != b.end()) {
-        cout << *it << endl;
-    } else {
-        cout << "Not found\n";
-    }
+<QuerySet [<Artist: John>, <Artist: Andrew>, <Artist: Micheal>]>
+```
+## 5. Listing down all artists sorted by name
+- Artist.objects.order_by('stage_name')
 
 ```
-
-### upper_bound
-  
-- Returns an iterator pointing to the first element greater than **‘x’**
-- Your array should be **sorted**
-
-```cpp
-    int x;
-    cin >> x;
-
-    auto it = upper_bound(b.begin(), b.end(), x);
-    if (it != b.end()) {
-        cout << *it << endl;
-    } else {
-        cout << "Not found\n";
-    }
+<QuerySet [<Artist: Andrew>, <Artist: John>, <Artist: Micheal>]>
+```
+## 6. Listing down all artists whose name starts with a
+- Artist.objects.filter(stage_name__istartswith='a')
 
 ```
+<QuerySet [<Artist: Andrew>]>
+```
+## 7. Creating some albums and assign them to any artists using objects manager 
+```
+album1=Album(name='album#1',cost=1000.50,artist=artist1,release_time=today)
+album1.save()
+album2=Album(name='album#2',cost=99.50,artist=artist2,release_time=yesterday)
+album2.save()
+```
 
-## <font color='08FAFA'>Problems</font>
+## 8. Creating some albums and assign them to any artists using the related object reference
 
-- Magic powder - 1 (brute force) - [Solution](https://github.com/ACM-FE-CU-Community/Sessions-Codes/blob/main/Binary%20search/Problems/magic-powder%201%20-%20BF.cpp)
-- [Magic powder - 1](https://codeforces.com/contest/670/problem/D1) (binary search) - [Solution](https://github.com/ACM-FE-CU-Community/Sessions-Codes/blob/main/Binary%20search/Problems/magic-powder%201%20-%20BS.cpp)
-- [Magic powder - 2](https://codeforces.com/contest/670/problem/D2) (binary search) - [Solution](https://github.com/ACM-FE-CU-Community/Sessions-Codes/blob/main/Binary%20search/Problems/magic-powder%202.cpp)
+```
+artist3.album_set.create(cost=1452.55,release_time=tomorrow)
+artist1.album_set.create(cost=50,release_time=yesterday,name='album#3')
+```
+
+## 9. Listing down the latest released album
+- Album.objects.order_by('release_time')
+
+```
+<QuerySet [<Album: album#2>, <Album: album#3>, <Album: album#1>, <Album: New Album>]>
+```
+
+## 10. Listing down all albums released before today
+- Album.objects.filter(release_time__date__lt=today.date())
+
+```
+<QuerySet [<Album: album#2>, <Album: album#3>]>
+```
+
+## 11. Listing down all albums released today or before but not after today
+- Album.objects.filter(release_time__date__lte=today.date())
+
+```
+<QuerySet [<Album: album#1>, <Album: album#2>, <Album: album#3>]>
+```
+
+## 12. Counting the total number of albums
+- Album.objects.count()
+
+```
+4
+```
+
+## 13. Listing down all albums for each artist using objects manager
+- for artist in Artist.objects.all():
+    Album.objects.filter(artist=artist)
+
+```
+<QuerySet [<Album: album#1>, <Album: album#3>]>
+<QuerySet [<Album: album#2>]>
+<QuerySet [<Album: New Album>]>
+```
+
+## 14. Listing down all albums for each artist using the related object reference
+- for artist in Artist.objects.all():
+    artist.album_set.all()
+
+```
+<QuerySet [<Album: album#1>, <Album: album#3>]>
+<QuerySet [<Album: album#2>]>
+<QuerySet [<Album: New Album>]>
+```
+
+## 15. Listing down all albums ordered by cost then by name (cost has the higher priority)
+- Album.objects.order_by('cost','name')
+
+```
+<QuerySet [<Album: album#3>, <Album: album#2>, <Album: album#1>, <Album: New Album>]>
+```

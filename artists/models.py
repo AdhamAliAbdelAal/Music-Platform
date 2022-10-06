@@ -10,6 +10,7 @@ class Artist(models.Model):
     )
     social_link=models.URLField(
         null=False,
+        blank=False
     )
     def __str__(self):
         return self.stage_name
