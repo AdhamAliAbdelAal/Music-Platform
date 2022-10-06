@@ -1,4 +1,4 @@
-# 🔎 Music Platform
+# :musical_note: Music Platform
 
 ## 1. Importing Artist, Album and datetime models
 
