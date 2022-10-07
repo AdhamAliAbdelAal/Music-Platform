@@ -28,7 +28,7 @@ artist3.save()
 - Artist.objects.all()
 
 ```
-<QuerySet [<Artist: John>, <Artist: Andrew>, <Artist: Micheal>]>
+<QuerySet [<Artist: Andrew>, <Artist: John>, <Artist: Micheal>]>
 ```
 ## 5. Listing down all artists sorted by name
 - Artist.objects.order_by('stage_name')

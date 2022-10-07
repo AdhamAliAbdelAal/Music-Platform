@@ -14,3 +14,5 @@ class Artist(models.Model):
     )
     def __str__(self):
         return self.stage_name
+    class Meta:
+        ordering=['stage_name']
