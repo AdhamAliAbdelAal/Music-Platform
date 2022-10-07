@@ -58,10 +58,10 @@ artist1.album_set.create(cost=50,release_time=yesterday,name='album#3')
 ```
 
 ## 9. Listing down the latest released album
-- Album.objects.order_by('release_time')
+- Album.objects.filter(release_time__date__lte=today.date()).order_by('release_time')
 
 ```
-<QuerySet [<Album: album#2>, <Album: album#3>, <Album: album#1>, <Album: New Album>]>
+<QuerySet [<Album: album#2>, <Album: album#3>, <Album: album#1>]>
 ```
 
 ## 10. Listing down all albums released before today
